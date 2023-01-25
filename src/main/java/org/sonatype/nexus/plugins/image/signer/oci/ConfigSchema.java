@@ -78,7 +78,7 @@ public class ConfigSchema {
 
     @JsonProperty("created")
     public void setCreated(String created) {
-        Pattern p = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}Z[\\+\\-]*\\d*");
+        Pattern p = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}Z[\\+\\-]*[:\\d]*");
         if (p.matcher(created).matches()) {
             this.created = created;
         } else {

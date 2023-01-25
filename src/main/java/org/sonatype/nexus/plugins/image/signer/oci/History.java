@@ -42,7 +42,7 @@ public class History {
 
     @JsonProperty("created")
     public void setCreated(String created) {
-        Pattern p = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}T-\\d{2}:-\\d{2}:-\\d{2}Z[\\+\\-]\\d*");
+        Pattern p = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{2}:\\d{2}:\\d{2}Z[\\+\\-]*[:\\d]*");
         if (p.matcher(created).matches()) {
             this.created = created;
         } else {
@@ -159,5 +159,7 @@ public class History {
         History rhs = ((History) other);
         return (((((((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.createdBy == rhs.createdBy)||((this.createdBy!= null)&&this.createdBy.equals(rhs.createdBy))))&&((this.created == rhs.created)||((this.created!= null)&&this.created.equals(rhs.created))))&&((this.author == rhs.author)||((this.author!= null)&&this.author.equals(rhs.author))))&&((this.emptyLayer == rhs.emptyLayer)||((this.emptyLayer!= null)&&this.emptyLayer.equals(rhs.emptyLayer))));
     }
+
+
 
 }
