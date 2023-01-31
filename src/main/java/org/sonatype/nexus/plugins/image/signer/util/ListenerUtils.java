@@ -42,8 +42,17 @@ public class ListenerUtils {
     }
 
     public static String getSHA256Digest(String importJson) throws NoSuchAlgorithmException {
-        return SHA_256 + ":" + new String(toHexView(MessageDigest.getInstance("SHA256")
-                .digest(importJson.getBytes(StandardCharsets.UTF_8))));
+        return getSHA256Digest(importJson, true);
+    }
+
+    public static String getSHA256Digest(String importJson, boolean withoutAlgorithmName) throws NoSuchAlgorithmException {
+        StringBuilder sb = new StringBuilder();
+        if (withoutAlgorithmName) {
+            sb.append(SHA_256).append(":");
+        }
+        sb.append(new String(toHexView(MessageDigest.getInstance("SHA256")
+                .digest(importJson.getBytes(StandardCharsets.UTF_8)))));
+        return sb.toString();
     }
 
     public static String generateSignatureLayer(String componentName, String contentDigest) throws Exception {

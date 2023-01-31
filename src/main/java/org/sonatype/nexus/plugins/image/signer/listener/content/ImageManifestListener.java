@@ -93,7 +93,8 @@ public class ImageManifestListener implements EventAware {
                         APPLICATION_VND_OCI_IMAGE_MANIFEST_V_1_JSON, ASSET_KIND_MANIFEST);
                 String assetName = (asset.path().replace(":","-") + SIG_EXTENSION);
                 createAssetWithComponent(contentFacet, imageManifestSchemaJson.getBytes(StandardCharsets.UTF_8),
-                        assetName,componentName, APPLICATION_VND_OCI_IMAGE_MANIFEST_V_1_JSON, ASSET_KIND_MANIFEST);
+                        assetName,componentName, APPLICATION_VND_OCI_IMAGE_MANIFEST_V_1_JSON,
+                        getSHA256Digest(imageManifestSchemaJson, false),  ASSET_KIND_MANIFEST);
             } catch(Exception ex) {
                 log.error(ex.getMessage(), ex);
             }
@@ -113,7 +114,7 @@ public class ImageManifestListener implements EventAware {
     }
 
     private void createAssetWithComponent(ContentFacet contentFacet, byte[] inputByteArray,
-                                          String assetName, String componentName, String contentType, String assetKind) throws Exception {
+                                          String assetName, String componentName, String contentType, String contentDigest, String assetKind) throws Exception {
         try(ByteArrayInputStream bais = new ByteArrayInputStream(inputByteArray);
             TempBlob blob = contentFacet.blobs().ingest(bais, contentType,  ImmutableList.of(HashAlgorithm.SHA1, HashAlgorithm.SHA256))) {
             Component component = contentFacet.components()
@@ -123,6 +124,7 @@ public class ImageManifestListener implements EventAware {
             contentFacet.assets().path(assetName)
                     .blob(blob)
                     .kind(assetKind)
+                    .attributes(CONTENT_DIGEST, contentDigest)
                     .component(component)
                     .save();
         }
