@@ -22,6 +22,7 @@ import javax.inject.Singleton;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 import static org.sonatype.nexus.plugins.image.signer.util.ListenerUtils.*;
 
@@ -121,10 +122,12 @@ public class ImageManifestListener implements EventAware {
                                               .name(componentName)
                                               .version(assetName.substring(assetName.indexOf(SHA_256)))
                                               .getOrCreate();
+            HashMap<String, Object> attributes = new HashMap<>();
+            attributes.put(CONTENT_DIGEST, contentDigest);
             contentFacet.assets().path(assetName)
                     .blob(blob)
                     .kind(assetKind)
-                    .attributes(CONTENT_DIGEST, contentDigest)
+                    .attributes(DOCKER, attributes)
                     .component(component)
                     .save();
         }
